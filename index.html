@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotizador Pro | Fotografía y Video México</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            body * { visibility: hidden; }
+            #area-cotizacion, #area-cotizacion * { visibility: visible; }
+            #area-cotizacion {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans antialiased">
+
+    <!-- Barra Superior -->
+    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 no-print">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-amber-500 text-slate-900 font-bold p-2 rounded-lg">
+                    📷
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white">Cotizador<span class="text-amber-400">Pro</span> MX</h1>
+                    <p class="text-xs text-slate-400">Calculadora de rentabilidad y presupuestos para creadores</p>
+                </div>
+            </div>
+            <!-- Botón de Monetización (Reemplaza el enlace por tu link de Ko-fi o Gumroad) -->
+            <a href="https://ko-fi.com" target="_blank" class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-semibold text-sm px-4 py-2 rounded-lg transition shadow-lg">
+                ☕ Apoyar proyecto / Versión Pro
+            </a>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal -->
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- COLUMNA IZQUIERDA: Formulario de Costos (7 columnas) -->
+        <div class="lg:col-span-7 space-y-6 no-print">
+            
+            <!-- 1. Datos del Estudio y Cliente -->
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+                <h2 class="text-lg font-semibold text-amber-400 mb-4 flex items-center gap-2">
+                    <span>1. Datos Generales</span>
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Nombre de tu Estudio / Marca</label>
+                        <input type="text" id="estudioNombre" placeholder="Ej. Estudio Visual MX" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Nombre del Cliente</label>
+                        <input type="text" id="clienteNombre" placeholder="Ej. Familia Hernández" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-xs text-slate-400 mb-1">Tipo de Proyecto / Paquete</label>
+                        <input type="text" id="proyectoNombre" placeholder="Ej. Cobertura Fotográfica XV Años + Sesión Previa" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Tiempo y Tarifa Base -->
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+                <h2 class="text-lg font-semibold text-amber-400 mb-4">2. Mano de Obra y Tiempo</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Tu tarifa por hora ($ MXN)</label>
+                        <input type="number" id="tarifaHora" value="600" min="0" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Horas de cobertura/toma</label>
+                        <input type="number" id="horasToma" value="5" min="0" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Horas de edición/entrega</label>
+                        <input type="number" id="horasEdicion" value="8" min="0" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Desgaste de Equipo y Gastos Operativos -->
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+                <h2 class="text-lg font-semibold text-amber-400 mb-1">3. Desgaste de Equipo y Viáticos</h2>
+                <p class="text-xs text-slate-400 mb-4">Calculamos un 1.5% del valor de tu equipo por evento para fondo de reposición.</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Valor total de tu equipo ($)</label>
+                        <input type="number" id="valorEquipo" value="45000" min="0" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Viáticos / Transporte ($)</label>
+                        <input type="number" id="viaticos" value="400" min="0" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Impresiones / Extras ($)</label>
+                        <input type="number" id="extras" value="1200" min="0" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Impuestos y Margen -->
+            <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg">
+                <h2 class="text-lg font-semibold text-amber-400 mb-4">4. Margen de Utilidad e Impuestos (SAT)</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Margen de ganancia del estudio (%)</label>
+                        <input type="number" id="margen" value="25" min="0" max="200" oninput="calcular()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div class="space-y-2 pt-2">
+                        <label class="flex items-center gap-2 text-sm cursor-pointer">
+                            <input type="checkbox" id="incluirIva" onchange="calcular()" class="rounded text-amber-500 focus:ring-0">
+                            <span>Sumar IVA (16%) para factura</span>
+                        </label>
+                        <label class="flex items-center gap-2 text-sm cursor-pointer">
+                            <input type="checkbox" id="retencionResico" onchange="calcular()" class="rounded text-amber-500 focus:ring-0">
+                            <span>Cliente Persona Moral (-1.25% ISR)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA: Vista Previa del Presupuesto (5 columnas) -->
+        <div class="lg:col-span-5">
+            <div id="area-cotizacion" class="bg-white text-slate-800 p-8 rounded-xl shadow-2xl border border-slate-200 sticky top-6">
+                
+                <!-- Encabezado del Documento -->
+                <div class="flex justify-between items-start border-b border-slate-200 pb-4 mb-6">
+                    <div>
+                        <h3 id="prevEstudio" class="text-xl font-bold text-slate-900">Tu Estudio Creativo</h3>
+                        <p class="text-xs text-slate-500">Propuesta de Servicios Profesionales</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="bg-slate-900 text-amber-400 text-xs font-bold px-2.5 py-1 rounded">COTIZACIÓN</span>
+                        <p id="prevFecha" class="text-xs text-slate-400 mt-1"></p>
+                    </div>
+                </div>
+
+                <!-- Datos del Cliente -->
+                <div class="mb-6 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                    <p class="text-xs text-slate-400 uppercase font-semibold">Preparado para:</p>
+                    <p id="prevCliente" class="font-bold text-slate-800">Cliente Prospecto</p>
+                    <p id="prevProyecto" class="text-sm text-slate-600 mt-1">Servicio de Fotografía y Producción</p>
+                </div>
+
+                <!-- Desglose de Costos -->
+                <div class="space-y-3 text-sm border-b border-slate-200 pb-4 mb-4">
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">Producción y Edición (<span id="prevHorasTotal">13</span> hrs)</span>
+                        <span id="prevManoObra" class="font-medium">$7,800.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">Uso y mantenimiento de equipo</span>
+                        <span id="prevDesgaste" class="font-medium">$675.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">Viáticos y logística</span>
+                        <span id="prevViaticos" class="font-medium">$400.00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-600">Entregables físicos / Extras</span>
+                        <span id="prevExtras" class="font-medium">$1,200.00</span>
+                    </div>
+                    <div class="flex justify-between text-emerald-700 bg-emerald-50 px-2 py-1 rounded">
+                        <span>Utilidad operativa (<span id="prevMargenPct">25</span>%)</span>
+                        <span id="prevUtilidad" class="font-semibold">$2,518.75</span>
+                    </div>
+                </div>
+
+                <!-- Subtotales e Impuestos -->
+                <div class="space-y-2 text-sm mb-6">
+                    <div class="flex justify-between text-slate-600">
+                        <span>Subtotal</span>
+                        <span id="prevSubtotal">$12,593.75</span>
+                    </div>
+                    <div id="filaIva" class="flex justify-between text-slate-600 hidden">
+                        <span>IVA (16%)</span>
+                        <span id="prevIva">$0.00</span>
+                    </div>
+                    <div id="filaIsr" class="flex justify-between text-red-600 hidden">
+                        <span>Retención ISR RESICO (-1.25%)</span>
+                        <span id="prevIsr">-$0.00</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t-2 border-slate-900">
+                        <span class="text-base font-bold text-slate-900">TOTAL A PAGAR</span>
+                        <span id="prevTotal" class="text-2xl font-extrabold text-slate-900">$12,593.75 MXN</span>
+                    </div>
+                    <p class="text-right text-xs text-slate-500">Anticipo sugerido (50%): <strong id="prevAnticipo" class="text-slate-800">$6,296.88</strong></p>
+                </div>
+
+                <!-- Nota al pie del presupuesto -->
+                <p class="text-[11px] text-slate-400 text-center border-t border-slate-100 pt-3">
+                    Cotización válida por 15 días naturales. Fecha reservada únicamente con el pago del anticipo.
+                </p>
+
+                <!-- Botones de Acción (Ocultos al imprimir PDF) -->
+                <div class="mt-6 grid grid-cols-2 gap-3 no-print">
+                    <button onclick="copiarWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 px-4 rounded-lg text-sm transition flex items-center justify-center gap-2 shadow">
+                        <span>Copiar WhatsApp</span>
+                    </button>
+                    <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 px-4 rounded-lg text-sm transition flex items-center justify-center gap-2 shadow">
+                        <span>Guardar PDF</span>
+                    </button>
+                </div>
+                <p id="mensajeCopiado" class="text-center text-xs text-emerald-600 font-semibold mt-2 hidden no-print">
+                    ¡Cotización copiada! Pégala directo en WhatsApp.
+                </p>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Formato de moneda MXN
+        const formatoMXN = new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: 'MXN'
+        });
+
+        // Cargar datos guardados previamente en el navegador
+        window.onload = () => {
+            if(localStorage.getItem('estudioNombre')) {
+                document.getElementById('estudioNombre').value = localStorage.getItem('estudioNombre');
+            }
+            if(localStorage.getItem('valorEquipo')) {
+                document.getElementById('valorEquipo').value = localStorage.getItem('valorEquipo');
+            }
+            const hoy = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
+            document.getElementById('prevFecha').innerText = hoy;
+            calcular();
+        };
+
+        function calcular() {
+            // Obtener valores
+            const estudio = document.getElementById('estudioNombre').value || 'Tu Estudio Creativo';
+            const cliente = document.getElementById('clienteNombre').value || 'Cliente Prospecto';
+            const proyecto = document.getElementById('proyectoNombre').value || 'Servicio de Fotografía y Producción';
+            
+            const tarifaHora = parseFloat(document.getElementById('tarifaHora').value) || 0;
+            const horasToma = parseFloat(document.getElementById('horasToma').value) || 0;
+            const horasEdicion = parseFloat(document.getElementById('horasEdicion').value) || 0;
+            const valorEquipo = parseFloat(document.getElementById('valorEquipo').value) || 0;
+            const viaticos = parseFloat(document.getElementById('viaticos').value) || 0;
+            const extras = parseFloat(document.getElementById('extras').value) || 0;
+            const margenPct = parseFloat(document.getElementById('margen').value) || 0;
+            
+            const incluirIva = document.getElementById('incluirIva').checked;
+            const retencionResico = document.getElementById('retencionResico').checked;
+
+            // Guardar preferencias del estudio en localStorage
+            localStorage.setItem('estudioNombre', document.getElementById('estudioNombre').value);
+            localStorage.setItem('valorEquipo', valorEquipo);
+
+            // Cálculos operativos
+            const horasTotales = horasToma + horasEdicion;
+            const costoManoObra = horasTotales * tarifaHora;
+            const costoDesgaste = valorEquipo * 0.015; // 1.5% desgaste por evento
+            const costoBase = costoManoObra + costoDesgaste + viaticos + extras;
+            
+            const utilidad = costoBase * (margenPct / 100);
+            const subtotal = costoBase + utilidad;
+
+            // Impuestos
+            const iva = incluirIva ? subtotal * 0.16 : 0;
+            const isr = retencionResico ? subtotal * 0.0125 : 0;
+            const total = subtotal + iva - isr;
+            const anticipo = total * 0.50;
+
+            // Actualizar Vista Previa
+            document.getElementById('prevEstudio').innerText = estudio;
+            document.getElementById('prevCliente').innerText = cliente;
+            document.getElementById('prevProyecto').innerText = proyecto;
+
+            document.getElementById('prevHorasTotal').innerText = horasTotales;
+            document.getElementById('prevManoObra').innerText = formatoMXN.format(costoManoObra);
+            document.getElementById('prevDesgaste').innerText = formatoMXN.format(costoDesgaste);
+            document.getElementById('prevViaticos').innerText = formatoMXN.format(viaticos);
+            document.getElementById('prevExtras').innerText = formatoMXN.format(extras);
+            
+            document.getElementById('prevMargenPct').innerText = margenPct;
+            document.getElementById('prevUtilidad').innerText = formatoMXN.format(utilidad);
+            document.getElementById('prevSubtotal').innerText = formatoMXN.format(subtotal);
+
+            // Mostrar/Ocultar impuestos
+            const filaIva = document.getElementById('filaIva');
+            if (incluirIva) {
+                filaIva.classList.remove('hidden');
+                document.getElementById('prevIva').innerText = formatoMXN.format(iva);
+            } else {
+                filaIva.classList.add('hidden');
+            }
+
+            const filaIsr = document.getElementById('filaIsr');
+            if (retencionResico) {
+                filaIsr.classList.remove('hidden');
+                document.getElementById('prevIsr').innerText = '-' + formatoMXN.format(isr);
+            } else {
+                filaIsr.classList.add('hidden');
+            }
+
+            document.getElementById('prevTotal').innerText = formatoMXN.format(total) + ' MXN';
+            document.getElementById('prevAnticipo').innerText = formatoMXN.format(anticipo);
+        }
+
+        function copiarWhatsApp() {
+            const estudio = document.getElementById('prevEstudio').innerText;
+            const cliente = document.getElementById('prevCliente').innerText;
+            const proyecto = document.getElementById('prevProyecto').innerText;
+            const total = document.getElementById('prevTotal').innerText;
+            const anticipo = document.getElementById('prevAnticipo').innerText;
+
+            const texto = `*COTIZACIÓN - ${estudio.toUpperCase()}*\n\n` +
+                          `Hola *${cliente}*, te comparto el presupuesto para tu proyecto:\n\n` +
+                          `📌 *Servicio:* ${proyecto}\n` +
+                          `💰 *Inversión Total:* ${total}\n` +
+                          `✅ *Anticipo para apartar fecha (50%):* ${anticipo}\n\n` +
+                          `_Cotización válida por 15 días. Quedo a tus órdenes para cualquier duda._`;
+
+            navigator.clipboard.writeText(texto).then(() => {
+                const msg = document.getElementById('mensajeCopiado');
+                msg.classList.remove('hidden');
